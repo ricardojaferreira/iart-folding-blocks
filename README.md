@@ -11,14 +11,15 @@ After cloning the project run:
 
 `mvn clean install -U`
 
-This will download all the dependencies and create a target folder were the jar will be created.
+This will download all the dependencies and create a target folders were the jars will be created.
 
 #### Runnig on the command line
 
 Use one  of the following options:
 
-* `java -cp target/folding-blocks-1.0.0-SNAPSHOT-jar-with-dependencies.jar pt.up.fe.iart.application.Application`
-* `mvn exec:java`
+* `java -cp application/target/application-${version}-jar-with-dependencies.jar pt.up.fe.iart.application.Application`
+* `java -jar application/target/application-${version}-jar-with-dependencies`
+* `mvn exec:java -pl application`
 
 #### Running on the IDE
 
