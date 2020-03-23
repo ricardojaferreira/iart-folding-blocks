@@ -1,4 +1,4 @@
-package pt.up.fe.iart.core.structures;
+package pt.up.fe.iart.core.structures.graph;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

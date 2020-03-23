@@ -1,4 +1,4 @@
-package pt.up.fe.iart.core.structures;
+package pt.up.fe.iart.core.structures.graph;
 
 public class Edge<E> {
     private Vertex<E> destination;

@@ -1,7 +1,7 @@
 package pt.up.fe.iart.core.search;
 
-import pt.up.fe.iart.core.structures.Graph;
-import pt.up.fe.iart.core.structures.Vertex;
+import pt.up.fe.iart.core.structures.graph.Graph;
+import pt.up.fe.iart.core.structures.graph.Vertex;
 
 import java.util.Set;
 

@@ -30,6 +30,9 @@
         <log4j-api.version>2.13.1</log4j-api.version>
         <log4j-core.version>2.13.1</log4j-core.version>
         <log4j-sl4j-impl.version>2.13.1</log4j-sl4j-impl.version>
+        <!-- TEST -->
+        <junit.version>4.13</junit.version>
+        <mockito-all.version>1.10.19</mockito-all.version>
     </properties>
 
     <dependencyManagement>
@@ -48,6 +51,24 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-slf4j-impl</artifactId>
                 <version>${log4j-sl4j-impl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pt.up.fe.iart.core</groupId>
+                <artifactId>core</artifactId>
+                <version>${project.parent.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>${mockito-all.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

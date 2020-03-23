@@ -122,7 +122,7 @@ algumas fontes com resoluções para este tipo de problemas.
 Tabuleiro: {
     Array(n x n): Dimensões;
     List(Peça): Peças formadas no tabuleiro;
-    List(Espaços): Informação das peças no tabuleiro;
+    List(Espaços): Informação dos espaços no tabuleiro;
     }
  
 Peça: {
