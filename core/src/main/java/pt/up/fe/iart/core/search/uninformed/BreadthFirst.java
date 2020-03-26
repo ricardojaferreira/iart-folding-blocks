@@ -3,6 +3,7 @@ package pt.up.fe.iart.core.search.uninformed;
 import pt.up.fe.iart.core.search.TraversalStrategy;
 import pt.up.fe.iart.core.structures.graph.Edge;
 import pt.up.fe.iart.core.structures.graph.Graph;
+import pt.up.fe.iart.core.structures.graph.GraphOperations;
 import pt.up.fe.iart.core.structures.graph.Vertex;
 
 import java.util.LinkedHashSet;
@@ -11,6 +12,12 @@ import java.util.Queue;
 import java.util.Set;
 
 public abstract class BreadthFirst<V> implements TraversalStrategy<V> {
+
+    private GraphOperations<V> graphOperations;
+
+    public BreadthFirst(GraphOperations<V> graphOperations) {
+        this.graphOperations = graphOperations;
+    }
 
     /**
      *
@@ -27,8 +34,10 @@ public abstract class BreadthFirst<V> implements TraversalStrategy<V> {
 
         while (!queue.isEmpty()) {
             Vertex<V> vertex = queue.poll();
-            if (reachObjective(graph, vertex)) {
+            if (graphOperations.reachObjective(vertex)) {
                 return vertex;
+            } else {
+                graphOperations.expandGraph(graph, vertex);
             }
             for (Edge<V> e: vertex.getAdjacent()) {
                 if (!expansion.contains(e.getDestination())) {

@@ -1,5 +1,6 @@
 package pt.up.fe.iart.core.structures.board;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +18,15 @@ public class Block {
     public Block(int id, List<Position> positions) {
         this(id);
         occupiedPositions.addAll(positions);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Block duplicateBlock() {
+        List<Position> duplicatedPositions = new ArrayList<>(this.occupiedPositions);
+        return new Block(this.id, duplicatedPositions);
     }
 
     /**
@@ -45,6 +55,14 @@ public class Block {
 
     /**
      *
+     * @param positions
+     */
+    public void addAllPositions(Set<Position> positions) {
+        this.occupiedPositions.addAll(positions);
+    }
+
+    /**
+     *
      * @param o
      * @return
      */
@@ -57,7 +75,9 @@ public class Block {
             return false;
         }
         Block block = (Block) o;
-        return id == block.id;
+        return id == block.id
+                && occupiedPositions.size() == block.getOccupiedPositions().size()
+                && occupiedPositions.stream().allMatch(position -> block.getOccupiedPositions().stream().anyMatch(position::equals));
     }
 
     /**

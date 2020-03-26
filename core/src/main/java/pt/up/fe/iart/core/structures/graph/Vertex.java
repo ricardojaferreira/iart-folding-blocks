@@ -2,22 +2,17 @@ package pt.up.fe.iart.core.structures.graph;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-public abstract class Vertex<V> {
+public class Vertex<V> {
     private V content;
-    private Vertex<V> parent;
     private List<Edge<V>> adjacent;
     private boolean discovered;
 
-    public Vertex(V content, Vertex<V> parent) {
+    public Vertex(V content) {
         this.content = content;
         this.adjacent = new LinkedList<>();
         this.discovered = false;
-        this.parent = parent;
-    }
-
-    public Vertex(V content) {
-        this(content, null);
     }
 
     /**
@@ -70,26 +65,27 @@ public abstract class Vertex<V> {
 
     /**
      *
-     * @param parent
+     * @param o
+     * @return
      */
-    public void addParent(Vertex<V> parent) {
-        this.parent = parent;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Vertex<?> vertex = (Vertex<?>) o;
+        return content.equals(vertex.content);
     }
 
     /**
      *
      * @return
      */
-    public Vertex<V> getParent() {
-        return this.parent;
+    @Override
+    public int hashCode() {
+        return Objects.hash(content);
     }
-
-    @Override
-    public abstract boolean equals(Object o);
-
-    @Override
-    public abstract int hashCode();
-
-    @Override
-    public abstract String toString();
 }

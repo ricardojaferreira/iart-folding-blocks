@@ -17,6 +17,14 @@ public class Cell {
      *
      * @return
      */
+    public Cell duplicateCell() {
+        return new Cell(this.position, this.belongsToBoard, this.isEmpty);
+    }
+
+    /**
+     *
+     * @return
+     */
     public Position getPosition() {
         return position;
     }
@@ -55,6 +63,14 @@ public class Cell {
 
     /**
      *
+     * @return
+     */
+    public boolean isFilled() {
+        return !isEmpty;
+    }
+
+    /**
+     *
      * @param empty
      */
     public void setEmpty(boolean empty) {
@@ -75,7 +91,9 @@ public class Cell {
             return false;
         }
         Cell cell = (Cell) o;
-        return position.equals(cell.position);
+        return belongsToBoard == cell.belongsToBoard
+                && isEmpty == cell.isEmpty
+                && position.equals(cell.position);
     }
 
     /**

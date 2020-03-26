@@ -3,6 +3,7 @@ package pt.up.fe.iart.core.search.uninformed;
 import pt.up.fe.iart.core.search.TraversalStrategy;
 import pt.up.fe.iart.core.structures.graph.Edge;
 import pt.up.fe.iart.core.structures.graph.Graph;
+import pt.up.fe.iart.core.structures.graph.GraphOperations;
 import pt.up.fe.iart.core.structures.graph.Vertex;
 
 import java.util.LinkedHashSet;
@@ -10,6 +11,12 @@ import java.util.Set;
 import java.util.Stack;
 
 public abstract class DepthFirst<V> implements TraversalStrategy<V> {
+
+    private GraphOperations<V> graphOperations;
+
+    public DepthFirst(GraphOperations<V> graphOperations) {
+        this.graphOperations = graphOperations;
+    }
 
     /**
      *
@@ -25,7 +32,7 @@ public abstract class DepthFirst<V> implements TraversalStrategy<V> {
 
         while (!stack.empty()) {
             Vertex<V> vertex = stack.pop();
-            if (reachObjective(graph, vertex)) {
+            if (graphOperations.reachObjective(vertex)) {
                 return vertex;
             }
             if (!expansion.contains(vertex)) {

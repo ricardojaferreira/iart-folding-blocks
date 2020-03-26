@@ -1,9 +1,7 @@
 package pt.up.fe.iart.core.structures.graph;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Graph<V> {
 
@@ -28,20 +26,5 @@ public class Graph<V> {
      */
     public List<Vertex<V>> getVertexList() {
         return vertexList;
-    }
-
-    /**
-     * Get the direct path to the root
-     * @param vertex
-     * @return
-     */
-    public Set<Vertex<V>> getPath(Vertex<V> vertex) {
-        Set<Vertex<V>> path = new LinkedHashSet<>();
-        path.add(vertex);
-        if (vertex.getParent() == null) {
-            return path;
-        } else {
-            return getPath(vertex.getParent());
-        }
     }
 }
