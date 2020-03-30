@@ -1,5 +1,7 @@
 package pt.up.fe.iart.core.structures.board;
 
+import pt.up.fe.iart.core.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -155,7 +157,7 @@ public class Board {
                 stringBuilder.append('|').append(' ').append(cellChar).append(' ');
             } else {
                 stringBuilder.append('|').append(' ').append(cellChar).append(' ').append('|');
-                stringBuilder.append('\n');
+                stringBuilder.append(Constants.NEW_LINE);
                 addBoardBorder(stringBuilder);
             }
         }
@@ -168,6 +170,6 @@ public class Board {
         for (int w = 0; w < width; w++) {
             stringBuilder.append(topBottomBorder);
         }
-        stringBuilder.append('+').append('\n');
+        stringBuilder.append('+').append(Constants.NEW_LINE);
     }
 }

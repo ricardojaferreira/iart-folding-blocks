@@ -94,8 +94,8 @@ public abstract class Astar<V> extends TraversalStrategy<V> {
                        if (actualCost + Constants.TRAVERSAL_COST < node.get().snd.fst) {
                            for (int i = 0; i < heuristicRates.size(); i++) {
                                if (heuristicRates.get(i).equals(node.get())) {
-                                   heuristicRates.remove(i);
-                                   heuristicRates.add(CustomPair.of(v,
+//                                   heuristicRates.remove(i);
+                                   heuristicRates.set(i, CustomPair.of(v,
                                                    CustomPair.of(actualCost + Constants.TRAVERSAL_COST, node.get().snd.snd)));
                                }
                            }
