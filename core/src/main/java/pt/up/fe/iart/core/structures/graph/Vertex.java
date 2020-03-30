@@ -1,5 +1,6 @@
 package pt.up.fe.iart.core.structures.graph;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -7,12 +8,16 @@ import java.util.Objects;
 public class Vertex<V> {
     private V content;
     private List<Edge<V>> adjacent;
+    private List<Vertex<V>> pathFromRoot;
+    private int distanceFromRoot;
     private boolean discovered;
 
     public Vertex(V content) {
         this.content = content;
         this.adjacent = new LinkedList<>();
         this.discovered = false;
+        this.distanceFromRoot = Integer.MAX_VALUE;
+        this.pathFromRoot = new ArrayList<>();
     }
 
     /**
@@ -48,19 +53,42 @@ public class Vertex<V> {
 
     /**
      *
-     * @param vertex
-     * @param weight
-     */
-    public void addEdge(Vertex<V> vertex, double weight) {
-        adjacent.add(new Edge<>(vertex, weight));
-    }
-
-    /**
-     *
      * @param edge
      */
     public void addEdge(Edge<V> edge) {
         adjacent.add(edge);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<Vertex<V>> getPathFromRoot() {
+        return pathFromRoot;
+    }
+
+    /**
+     *
+     * @param pathFromRoot
+     */
+    public void setPathFromRoot(List<Vertex<V>> pathFromRoot) {
+        this.pathFromRoot = pathFromRoot;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getDistanceFromRoot() {
+        return distanceFromRoot;
+    }
+
+    /**
+     *
+     * @param distanceFromRoot
+     */
+    public void setDistanceFromRoot(int distanceFromRoot) {
+        this.distanceFromRoot = distanceFromRoot;
     }
 
     /**

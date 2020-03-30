@@ -1,17 +1,11 @@
 package pt.up.fe.iart.core.structures.board;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Board {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Board.class);
 
     private final int width;
     private final int height;
@@ -39,7 +33,6 @@ public class Board {
     }
 
     /**
-     * This function returns a copy of all cells, so that the list cannot be changed outside.
      * @return
      */
     public List<Cell> getCells() {
@@ -47,11 +40,10 @@ public class Board {
     }
 
     /**
-     * This function returns a copy of all blocks, so that the list cannot be changed outside.
      * @return List of blocks
      */
     public List<Block> getBlocks() {
-        return new ArrayList<>(blocks);
+        return this.blocks;
     }
 
     /**
@@ -100,52 +92,6 @@ public class Board {
 
     /**
      *
-     * @param blockId
-     * @param positions
-     * @return
-     */
-    public boolean updateBlockWithNewPositions(int blockId, Set<Position> positions) {
-        Block block = getBlockById(blockId);
-        block.addAllPositions(positions);
-        return addBlock(block);
-    }
-
-    /**
-     *
-     * @param block
-     * @return
-     */
-    public boolean addBlock(Block block) {
-
-        if (!block.getOccupiedPositions().stream().allMatch(
-                blockPos -> cells.stream().filter(Cell::belongsToBoard).map(Cell::getPosition).anyMatch(cellPos -> cellPos.equals(blockPos))
-        )) {
-            LOGGER.debug("Trying to add a block with positions outside the bounderies!");
-            return false;
-        }
-
-        if (blocks.stream()
-                .filter(boardBlock -> !boardBlock.equals(block))
-                .map(Block::getOccupiedPositions)
-                .flatMap(Collection::stream)
-                .anyMatch(p -> block.getOccupiedPositions().contains(p))) {
-            LOGGER.debug("Trying to add a block in an occupied position.");
-            return false;
-        }
-
-        if (this.blocks.contains(block)) {
-            this.blocks.set(this.blocks.indexOf(block), block);
-        } else {
-            this.blocks.add(block);
-        }
-
-        cells.stream().filter(cell -> block.getOccupiedPositions().contains(cell.getPosition())).forEach(cell -> cell.setEmpty(false));
-        LOGGER.debug("The block with id {} was added to the board.", block.getBlockId());
-        return true;
-    }
-
-    /**
-     *
      * @param o
      * @return
      */
@@ -176,5 +122,52 @@ public class Board {
     @Override
     public int hashCode() {
         return Objects.hash(width, height, cells, blocks);
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        char empty = '0';
+        char notArea = '&';
+
+
+        List<Character> board = this.cells.stream().map(cell -> {
+            if (cell.belongsToBoard()) {
+                return empty;
+            } else {
+                return notArea;
+            }
+        }).collect(Collectors.toList());
+
+        this.blocks.forEach(block -> block.getOccupiedPositions().forEach(position -> {
+            int index = (this.width - 1) * position.getyCoord() + position.getyCoord() + position.getxCoord();
+            board.set(index, Character.forDigit(block.getBlockId(), 10));
+        }));
+
+        StringBuilder stringBuilder = new StringBuilder();
+        addBoardBorder(stringBuilder);
+        for (int i = 1; i <= board.size(); i++) {
+            Character cellChar = board.get(i - 1) == '0' ? ' ' : board.get(i - 1);
+            if (i % (width) != 0) {
+                stringBuilder.append('|').append(' ').append(cellChar).append(' ');
+            } else {
+                stringBuilder.append('|').append(' ').append(cellChar).append(' ').append('|');
+                stringBuilder.append('\n');
+                addBoardBorder(stringBuilder);
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+    private void addBoardBorder(StringBuilder stringBuilder) {
+        String topBottomBorder = "+---";
+        for (int w = 0; w < width; w++) {
+            stringBuilder.append(topBottomBorder);
+        }
+        stringBuilder.append('+').append('\n');
     }
 }

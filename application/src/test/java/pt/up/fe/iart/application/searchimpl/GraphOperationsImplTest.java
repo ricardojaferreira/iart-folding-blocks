@@ -1,24 +1,36 @@
 package pt.up.fe.iart.application.searchimpl;
 
+import org.junit.Before;
 import org.junit.Test;
 import pt.up.fe.iart.core.structures.board.Block;
 import pt.up.fe.iart.core.structures.board.Board;
+import pt.up.fe.iart.core.structures.board.BoardOperations;
+import pt.up.fe.iart.core.structures.board.Operators;
 import pt.up.fe.iart.core.structures.board.Position;
 import pt.up.fe.iart.core.structures.graph.Graph;
 import pt.up.fe.iart.core.structures.graph.Vertex;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
 public class GraphOperationsImplTest {
 
+    private BoardOperations boardOperations;
+
+    @Before
+    public void setUp() {
+        boardOperations = new BoardOperationsImpl();
+    }
+
     @Test
     public void expandGraph() {
-        GraphOperationsImpl victim = new GraphOperationsImpl();
+        GraphOperationsImpl victim = new GraphOperationsImpl(new BoardOperationsImpl());
         Board board = new Board(5, 5);
         board.generateSquaredBoard();
-        board.addBlock(new Block(board.getNextBlockId(), Arrays.asList(new Position(0, 0))));
+        boardOperations.addBlock(board, new Block(board.getNextBlockId(), Arrays.asList(new Position(0, 0))));
         Vertex<Board> root = new Vertex<>(board);
         Graph<Board> graph = new Graph<>();
         graph.addVertex(root);
@@ -64,5 +76,57 @@ public class GraphOperationsImplTest {
         int exp09 = victim.expandGraph(graph, graph.getVertexList().get(8));
         assertEquals(0, exp09);
         assertEquals(9, graph.getVertexList().size());
+    }
+
+    @Test
+    public void getShortestPath() {
+        GraphOperationsImpl victim = new GraphOperationsImpl(new BoardOperationsImpl());
+        Board board = new Board(4, 4);
+        board.generateSquaredBoard();
+        boardOperations.addBlock(board, new Block(board.getNextBlockId(), Arrays.asList(new Position(0, 0))));
+        Vertex<Board> root = new Vertex<>(board);
+        Graph<Board> graph = new Graph<>();
+        graph.addVertex(root);
+        int i = 1;
+        int index = 0;
+        while (i != 0) {
+            i = victim.expandGraph(graph, graph.getVertexList().get(index));
+            index++;
+        }
+
+        assertEquals(9, graph.getVertexList().size());
+
+        List<Vertex<Board>> path01 = victim.getShortestPath(graph, graph.getVertexList().get(0), graph.getVertexList().get(3));
+        List<String> expectedMovements =
+                Arrays.asList(Operators.DOUBLE_DOWN.getMovementName() + " - 1", Operators.DOUBLE_DOWN.getMovementName() + " - 1");
+        checkMovementOrder(expectedMovements, path01, graph.getVertexList().get(3));
+
+        List<Vertex<Board>> path02 = victim.getShortestPath(graph, graph.getVertexList().get(0), graph.getVertexList().get(8));
+        List<String> expectedMovements02 = Arrays.asList(
+                Operators.DOUBLE_DOWN.getMovementName() + " - 1",
+                Operators.DOUBLE_DOWN.getMovementName() + " - 1",
+                Operators.DOUBLE_RIGHT.getMovementName() + " - 1",
+                Operators.DOUBLE_RIGHT.getMovementName() + " - 1");
+        checkMovementOrder(expectedMovements02, path02, graph.getVertexList().get(8));
+    }
+
+    private void checkMovementOrder(List<String> expectedMovents, List<Vertex<Board>> path, Vertex<Board> destination) {
+        assertEquals(expectedMovents.size(), path.size());
+        for (int i = 0; i < path.size() - 1; i++) {
+             Optional<Vertex<Board>> nextVertex = Optional.ofNullable(path.get(i + 1));
+             if (nextVertex.isPresent()) {
+                 assertEquals(expectedMovents.get(i),
+                         path.get(i).getAdjacent().stream()
+                                 .filter(e -> e.getDestination().equals(nextVertex.get()))
+                                 .findFirst().get()
+                                 .getLabel());
+             } else {
+                 assertEquals(expectedMovents.get(i),
+                         path.get(i).getAdjacent().stream()
+                                 .filter(e -> e.getDestination().equals(destination))
+                                 .findFirst().get()
+                                 .getLabel());
+             }
+        }
     }
 }

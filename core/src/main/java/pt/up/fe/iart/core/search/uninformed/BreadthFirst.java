@@ -11,12 +11,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-public abstract class BreadthFirst<V> implements TraversalStrategy<V> {
-
-    private GraphOperations<V> graphOperations;
+public class BreadthFirst<V> extends TraversalStrategy<V> {
 
     public BreadthFirst(GraphOperations<V> graphOperations) {
-        this.graphOperations = graphOperations;
+        super(graphOperations);
     }
 
     /**
@@ -34,10 +32,10 @@ public abstract class BreadthFirst<V> implements TraversalStrategy<V> {
 
         while (!queue.isEmpty()) {
             Vertex<V> vertex = queue.poll();
-            if (graphOperations.reachObjective(vertex)) {
+            if (super.getGraphOperations().reachObjective(vertex)) {
                 return vertex;
             } else {
-                graphOperations.expandGraph(graph, vertex);
+                super.getGraphOperations().expandGraph(graph, vertex);
             }
             for (Edge<V> e: vertex.getAdjacent()) {
                 if (!expansion.contains(e.getDestination())) {

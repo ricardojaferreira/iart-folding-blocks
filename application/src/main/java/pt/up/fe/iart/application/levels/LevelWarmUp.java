@@ -1,8 +1,9 @@
 package pt.up.fe.iart.application.levels;
 
+import pt.up.fe.iart.application.searchimpl.BoardOperationsImpl;
 import pt.up.fe.iart.core.structures.board.Block;
 import pt.up.fe.iart.core.structures.board.Board;
-import pt.up.fe.iart.core.structures.board.Cell;
+import pt.up.fe.iart.core.structures.board.BoardOperations;
 import pt.up.fe.iart.core.structures.board.Operators;
 import pt.up.fe.iart.core.structures.board.Position;
 
@@ -13,10 +14,11 @@ import java.util.Set;
 public class LevelWarmUp {
 
     private Board board;
+    private BoardOperations boardOperations;
 
     public LevelWarmUp() {
         board = new Board(4, 2);
-
+        boardOperations = new BoardOperationsImpl();
     }
 
     /**
@@ -25,10 +27,14 @@ public class LevelWarmUp {
      */
     public Board startLevel() {
         board.generateSquaredBoard();
-        Block block = new Block(
+        Block block01 = new Block(
                 board.getNextBlockId(),
                 Arrays.asList(new Position(0, 0), new Position(1, 0)));
-        board.addBlock(block);
+        boardOperations.addBlock(board, block01);
+        Block block02 = new Block(
+                board.getNextBlockId(),
+                Arrays.asList(new Position(2, 1), new Position(3, 1)));
+        boardOperations.addBlock(board, block02);
         return board;
     }
 
@@ -40,21 +46,13 @@ public class LevelWarmUp {
      */
     public Optional<Board> moveBlock(int blockId, Operators operator) {
         Block blockToMove = board.getBlockById(blockId);
-        Set<Position> listOfSymmetricPositions = operator.getSymmetricBlockPositions(blockToMove, board);
+        Set<Position> listOfSymmetricPositions = operator.getSymmetricBlockPositions(blockToMove, board, boardOperations);
         if (listOfSymmetricPositions.isEmpty()) {
             return Optional.empty();
         }
 
         blockToMove.addAllPositions(listOfSymmetricPositions);
-        board.addBlock(blockToMove);
+        boardOperations.addBlock(board, blockToMove);
         return Optional.of(board);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isWinningState() {
-        return board.getCells().stream().filter(Cell::belongsToBoard).allMatch(Cell::isFilled);
     }
 }

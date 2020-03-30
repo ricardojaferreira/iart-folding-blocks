@@ -1,21 +1,47 @@
 package pt.up.fe.iart.core.search;
 
-import pt.up.fe.iart.core.Constants;
-import pt.up.fe.iart.core.structures.graph.Edge;
 import pt.up.fe.iart.core.structures.graph.Graph;
+import pt.up.fe.iart.core.structures.graph.GraphOperations;
 import pt.up.fe.iart.core.structures.graph.Vertex;
 
-import java.util.Set;
+import java.util.List;
 
-public interface TraversalStrategy<V> {
-    Vertex<V> getResultNode(Graph<V> graph, Vertex<V> root);
-    double getTraversalCost(Set<Vertex<V>> traversalExpansion);
+public abstract class TraversalStrategy<V> {
 
-    default void addEdgeToVertex(Graph<V> graph, Vertex<V> vertexStart, Vertex<V> vertexDestination) {
-        if (!graph.getVertexList().contains(vertexDestination)) {
-            Edge<V> edge = new Edge<>(vertexDestination, Constants.TRAVERSAL_COST);
-            vertexStart.addEdge(edge);
-            graph.addVertex(vertexDestination);
-        }
+    private GraphOperations<V> graphOperations;
+
+    /**
+     *
+     * @param graphOperations
+     */
+    public TraversalStrategy(GraphOperations<V> graphOperations) {
+        this.graphOperations = graphOperations;
+    }
+
+    /**
+     *
+     * @param graph
+     * @param source
+     * @param destination
+     * @return
+     */
+    public List<Vertex<V>> getShortestPath(Graph<V> graph, Vertex<V> source, Vertex<V> destination) {
+        return graphOperations.getShortestPath(graph, source, destination);
+    }
+
+    /**
+     *
+     * @param graph
+     * @param root
+     * @return
+     */
+    public abstract Vertex<V> getResultNode(Graph<V> graph, Vertex<V> root);
+
+    /**
+     *
+     * @return
+     */
+    protected GraphOperations<V> getGraphOperations() {
+        return graphOperations;
     }
 }

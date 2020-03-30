@@ -1,4 +1,4 @@
-package pt.up.fe.iart.core.search.uninformed;
+package pt.up.fe.iart.core.search.informed;
 
 import pt.up.fe.iart.core.search.TraversalStrategy;
 import pt.up.fe.iart.core.structures.graph.Edge;
@@ -7,15 +7,20 @@ import pt.up.fe.iart.core.structures.graph.GraphOperations;
 import pt.up.fe.iart.core.structures.graph.Vertex;
 
 import java.util.ArrayDeque;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public class DepthFirst<V> extends TraversalStrategy<V> {
+public abstract class Greedy<V> extends TraversalStrategy<V> {
 
-    public DepthFirst(GraphOperations<V> graphOperations) {
+    public Greedy(GraphOperations<V> graphOperations) {
         super(graphOperations);
     }
+
+    public abstract Comparator<Vertex<V>> heuristic();
 
     /**
      *
@@ -38,13 +43,19 @@ public class DepthFirst<V> extends TraversalStrategy<V> {
             }
             if (!expansion.contains(vertex)) {
                 expansion.add(vertex);
-                for (Edge<V> e: vertex.getAdjacent()) {
-                    if (!expansion.contains(e.getDestination())) {
-                        stack.push(e.getDestination());
+                List<Vertex<V>> vertexByPriority = vertex.getAdjacent().stream()
+                        .map(Edge::getDestination)
+                        .sorted(heuristic())
+                        .collect(Collectors.toList());
+                vertexByPriority.forEach(v -> {
+                    if (!expansion.contains(v)) {
+                        stack.push(v);
                     }
-                }
+                });
             }
         }
         return null;
     }
+
+
 }

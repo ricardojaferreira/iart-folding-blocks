@@ -1,6 +1,8 @@
 package pt.up.fe.iart.core.structures.board;
 
+import org.junit.Before;
 import org.junit.Test;
+import pt.up.fe.iart.core.BoardOperationsTestImpl;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +17,12 @@ import static org.junit.Assert.assertFalse;
 
 public class BoardTest {
     private Board victim;
+    private BoardOperations boardOperations;
+
+    @Before
+    public void setUp() {
+        boardOperations = new BoardOperationsTestImpl();
+    }
 
     @Test
     public void instantiateBoardClass() {
@@ -29,7 +37,7 @@ public class BoardTest {
         victim = new Board(3, 3);
         victim.generateSquaredBoard();
         Block block = new Block(1, Arrays.asList(new Position(2, 2)));
-        victim.addBlock(block);
+        boardOperations.addBlock(victim, block);
         Board duplicated = victim.duplicateBoard();
         duplicated.getCells().get(0).setEmpty(false);
         duplicated.getBlocks().get(0).addPosition(new Position(2, 1));
@@ -58,7 +66,7 @@ public class BoardTest {
         victim.generateSquaredBoard();
         Position blockPosition = new Position(20, 20);
         Block block = new Block(1, Collections.singletonList(blockPosition));
-        assertFalse(victim.addBlock(block));
+        assertFalse(boardOperations.addBlock(victim, block));
     }
 
     @Test
@@ -68,10 +76,10 @@ public class BoardTest {
         Position position1 = new Position(16, 16);
         Position position2 = new Position(17, 17);
         Block block01 = new Block(1, Arrays.asList(position1, position2));
-        boolean firstBlockAdded = victim.addBlock(block01);
+        boolean firstBlockAdded = boardOperations.addBlock(victim, block01);
         assertTrue(firstBlockAdded);
         Block block02 = new Block(2, Collections.singletonList(position1));
-        assertFalse(victim.addBlock(block02));
+        assertFalse(boardOperations.addBlock(victim, block02));
     }
 
     @Test
@@ -82,14 +90,14 @@ public class BoardTest {
         Position position2 = new Position(17, 16);
         Block block01 = new Block(1, Arrays.asList(position1, position2));
 
-        boolean firstBlockAdded = victim.addBlock(block01);
+        boolean firstBlockAdded = boardOperations.addBlock(victim, block01);
         assertTrue(firstBlockAdded);
         assertEquals(1, victim.getBlocks().size());
         assertEquals(2, victim.getCells().stream().filter(cell -> !cell.isEmpty()).count());
         block01.addPosition(new Position(18, 16));
         block01.addPosition(new Position(19, 16));
 
-        boolean firstBlockUpdated = victim.addBlock(block01);
+        boolean firstBlockUpdated = boardOperations.addBlock(victim, block01);
         assertTrue(firstBlockUpdated);
         assertEquals(1, victim.getBlocks().size());
         assertEquals(4, victim.getCells().stream().filter(cell -> !cell.isEmpty()).count());
@@ -103,7 +111,7 @@ public class BoardTest {
         Position position2 = new Position(17, 16);
         Block block01 = new Block(1, Arrays.asList(position1, position2));
 
-        boolean firstBlockAdded = victim.addBlock(block01);
+        boolean firstBlockAdded = boardOperations.addBlock(victim, block01);
         assertTrue(firstBlockAdded);
         assertEquals(1, victim.getBlocks().size());
         assertEquals(2, victim.getCells().stream().filter(cell -> !cell.isEmpty()).count());
@@ -115,7 +123,7 @@ public class BoardTest {
         Position position05 = new Position(3, 8);
         Block block02 = new Block(2, Arrays.asList(position03, position04, position05));
 
-        boolean secondBlockAdded = victim.addBlock(block02);
+        boolean secondBlockAdded = boardOperations.addBlock(victim, block02);
         assertTrue(secondBlockAdded);
         assertEquals(2, victim.getBlocks().size());
         assertEquals(5, victim.getCells().stream().filter(cell -> !cell.isEmpty()).count());
@@ -127,29 +135,29 @@ public class BoardTest {
         victim.generateSquaredBoard();
         Position position01 = new Position(16, 16);
         Position position02 = new Position(17, 16);
-        victim.addBlock(new Block(victim.getNextBlockId(), Arrays.asList(position01, position02)));
+        boardOperations.addBlock(victim, new Block(victim.getNextBlockId(), Arrays.asList(position01, position02)));
 
         Board equalBoard = new Board(20, 20);
         equalBoard.generateSquaredBoard();
         Position position03 = new Position(0, 0);
         Position position04 = new Position(0, 1);
-        equalBoard.addBlock(new Block(equalBoard.getNextBlockId(), Arrays.asList(position03, position04)));
+        boardOperations.addBlock(equalBoard, new Block(equalBoard.getNextBlockId(), Arrays.asList(position03, position04)));
 
         assertNotEquals(victim, equalBoard);
         victim.getBlockById(1).addAllPositions(new HashSet<>(Arrays.asList(position03, position04)));
         equalBoard.getBlockById(1).addAllPositions(new HashSet<>(Arrays.asList(position01, position02)));
         assertNotEquals(victim, equalBoard);
 
-        victim.addBlock(victim.getBlockById(1));
-        equalBoard.addBlock(equalBoard.getBlockById(1));
+        boardOperations.addBlock(victim, victim.getBlockById(1));
+        boardOperations.addBlock(equalBoard, equalBoard.getBlockById(1));
         assertEquals(victim, equalBoard);
 
-        victim.addBlock(new Block(3, Collections.singletonList(new Position(3, 4))));
-        equalBoard.addBlock(new Block(2, Collections.singletonList(new Position(6, 7))));
+        boardOperations.addBlock(victim, new Block(3, Collections.singletonList(new Position(3, 4))));
+        boardOperations.addBlock(equalBoard, new Block(2, Collections.singletonList(new Position(6, 7))));
         assertNotEquals(victim, equalBoard);
 
-        victim.addBlock(new Block(2, Collections.singletonList(new Position(6, 7))));
-        equalBoard.addBlock(new Block(3, Collections.singletonList(new Position(3, 4))));
+        boardOperations.addBlock(victim, new Block(2, Collections.singletonList(new Position(6, 7))));
+        boardOperations.addBlock(equalBoard, new Block(3, Collections.singletonList(new Position(3, 4))));
         assertEquals(victim, equalBoard);
     }
 }
