@@ -1,4 +1,4 @@
-package pt.up.fe.iart.application.searchimpl;
+package pt.up.fe.iart.application.structures;
 
 import pt.up.fe.iart.core.Constants;
 import pt.up.fe.iart.core.structures.board.Board;

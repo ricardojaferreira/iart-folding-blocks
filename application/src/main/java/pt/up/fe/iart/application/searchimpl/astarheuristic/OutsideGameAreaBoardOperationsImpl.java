@@ -1,4 +1,4 @@
-package pt.up.fe.iart.application.searchimpl;
+package pt.up.fe.iart.application.searchimpl.astarheuristic;
 
 import pt.up.fe.iart.core.structures.board.Block;
 import pt.up.fe.iart.core.structures.board.Board;
@@ -9,7 +9,7 @@ import pt.up.fe.iart.core.structures.board.Position;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class BoardOperationsImpl implements BoardOperations {
+public class OutsideGameAreaBoardOperationsImpl implements BoardOperations {
 
     /**
      *
@@ -20,7 +20,6 @@ public class BoardOperationsImpl implements BoardOperations {
     @Override
     public boolean checkIfPositionsAreAvailable(Set<Position> positions, Board board) {
         return board.getCells().stream()
-                .filter(Cell::belongsToBoard)
                 .filter(Cell::isEmpty)
                 .map(Cell::getPosition)
                 .collect(Collectors.toList()).containsAll(positions);
@@ -48,6 +47,6 @@ public class BoardOperationsImpl implements BoardOperations {
      */
     @Override
     public boolean addBlock(Board board, Block block) {
-        return validateOccupiedPositions(board, block) && validateBoundaries(board, block) && addBlockAfterValidation(board, block);
+        return validateOccupiedPositions(board, block) && addBlockAfterValidation(board, block);
     }
 }

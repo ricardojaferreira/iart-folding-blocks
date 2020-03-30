@@ -2,6 +2,8 @@ package pt.up.fe.iart.application.searchimpl;
 
 import org.junit.Before;
 import org.junit.Test;
+import pt.up.fe.iart.application.structures.BoardOperationsImpl;
+import pt.up.fe.iart.application.structures.GraphOperationsImpl;
 import pt.up.fe.iart.core.structures.board.Block;
 import pt.up.fe.iart.core.structures.board.Board;
 import pt.up.fe.iart.core.structures.board.BoardOperations;
