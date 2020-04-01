@@ -82,4 +82,13 @@ public class UniformCost<V> extends TraversalStrategy<V> {
             }
         });
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Uniform cost search";
+    }
 }

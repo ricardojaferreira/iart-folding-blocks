@@ -46,4 +46,13 @@ public class BreadthFirst<V> extends TraversalStrategy<V> {
         }
         return null;
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Breadth first search";
+    }
 }

@@ -99,7 +99,7 @@ public class MostFilledGreedyImplTest {
         List<Vertex<Board>> pathToVictory = victim.getShortestPath(graph, root, destination);
 
         Vertex<Board> nextVertex = pathToVictory.get(1);
-        assertEquals("Double Left - 2", pathToVictory.get(0).getAdjacent().stream()
+        assertEquals("Block 2 - Double Left", pathToVictory.get(0).getAdjacent().stream()
                 .filter(e -> e.getDestination().equals(nextVertex))
                 .findFirst().get().getLabel());
     }

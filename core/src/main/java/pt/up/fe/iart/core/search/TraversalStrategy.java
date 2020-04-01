@@ -41,7 +41,7 @@ public abstract class TraversalStrategy<V> {
      *
      * @return
      */
-    protected GraphOperations<V> getGraphOperations() {
+    public GraphOperations<V> getGraphOperations() {
         return graphOperations;
     }
 }

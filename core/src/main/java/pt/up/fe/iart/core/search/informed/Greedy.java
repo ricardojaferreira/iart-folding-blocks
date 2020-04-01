@@ -57,5 +57,12 @@ public abstract class Greedy<V> extends TraversalStrategy<V> {
         return null;
     }
 
-
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Greedy search";
+    }
 }

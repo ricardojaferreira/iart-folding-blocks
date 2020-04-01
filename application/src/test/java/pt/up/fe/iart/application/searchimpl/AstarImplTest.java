@@ -165,7 +165,7 @@ public class AstarImplTest {
         Vertex<Board> goal = victim.getResultNode(graph, root);
         List<Vertex<Board>> path = victim.getShortestPath(graph, root, goal);
 
-        assertEquals(5, path.size());
+        assertEquals(6, path.size());
     }
 
     @Test
@@ -189,9 +189,9 @@ public class AstarImplTest {
         Graph<Board> graph = new Graph<>();
         graph.addVertex(root);
 
-        assertEquals(3, victim.getHeuristicRate(root));
+        assertEquals(4, victim.getHeuristicRate(root));
         graphOperations.expandGraph(graph, root);
-        assertEquals(3, victim.getHeuristicRate(root.getAdjacent().get(0).getDestination()));
-        assertEquals(2, victim.getHeuristicRate(root.getAdjacent().get(2).getDestination()));
+        assertEquals(4, victim.getHeuristicRate(root.getAdjacent().get(0).getDestination()));
+        assertEquals(3, victim.getHeuristicRate(root.getAdjacent().get(2).getDestination()));
     }
 }

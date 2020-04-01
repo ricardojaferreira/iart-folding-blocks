@@ -151,16 +151,10 @@
         <!-- See https://checkstyle.org/config_coding.html -->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <module name="HiddenField">
-            <property name="ignoreConstructorParameter" value="true"/>
-        </module>
+        <!--        <module name="HiddenField"/>-->
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
-<!--        <module name="MagicNumber">-->
-<!--            <property name="ignoreNumbers" value="20"/>-->
-<!--            <property name="constantWaiverParentToken" value="ASSIGN"/>-->
-<!--            <property name="ignoreFieldDeclaration" value="true"/>-->
-<!--        </module>-->
+        <!--        <module name="MagicNumber" />-->
         <module name="MissingSwitchDefault"/>
         <module name="MultipleVariableDeclarations"/>
         <module name="SimplifyBooleanExpression"/>
@@ -172,7 +166,9 @@
         <module name="FinalClass"/>
         <!--        <module name="HideUtilityClassConstructor"/>-->
         <module name="InterfaceIsType"/>
-        <module name="VisibilityModifier"/>
+        <module name="VisibilityModifier">
+            <property name="allowPublicFinalFields" value="true"/>
+        </module>
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See https://checkstyle.org/config_misc.html -->

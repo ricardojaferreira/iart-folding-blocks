@@ -49,4 +49,13 @@ public class OutsideGameAreaBoardOperationsImpl implements BoardOperations {
     public boolean addBlock(Board board, Block block) {
         return validateOccupiedPositions(board, block) && addBlockAfterValidation(board, block);
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Fill outside game area";
+    }
 }

@@ -8,13 +8,13 @@ import pt.up.fe.iart.core.structures.board.Position;
 
 import java.util.Arrays;
 
-public class LevelWarmUp implements Level {
+public class LevelMedium implements Level {
 
     private Board board;
     private BoardOperations boardOperations;
 
-    public LevelWarmUp() {
-        board = new Board(4, 4);
+    public LevelMedium() {
+        board = new Board(5, 9);
         boardOperations = new BoardOperationsImpl();
     }
 
@@ -27,8 +27,17 @@ public class LevelWarmUp implements Level {
         board.generateSquaredBoard();
         Block block01 = new Block(
                 board.getNextBlockId(),
-                Arrays.asList(new Position(0, 3)));
+                Arrays.asList(new Position(0, 0), new Position(0, 1)));
         boardOperations.addBlock(board, block01);
+        Block block02 = new Block(
+                board.getNextBlockId(),
+                Arrays.asList(new Position(1, 0)));
+        boardOperations.addBlock(board, block02);
+        Block block03 = new Block(
+                board.getNextBlockId(),
+                Arrays.asList(new Position(1, 1)));
+        boardOperations.addBlock(board, block03);
+        board.getCellByPosition(new Position(0, 8)).setBelongsToBoard(false);
         return board;
     }
 

@@ -22,4 +22,13 @@ public class MostFilledGreedyImpl extends Greedy<Board> {
     public Comparator<Vertex<Board>> heuristic() {
         return Comparator.comparingLong(v -> v.getContent().getCells().stream().filter(Cell::isFilled).count());
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Greedy Search (Most occupied positions)";
+    }
 }

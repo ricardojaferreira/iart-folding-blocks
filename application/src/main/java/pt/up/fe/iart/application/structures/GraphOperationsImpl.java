@@ -57,7 +57,7 @@ public class GraphOperationsImpl implements GraphOperations<Board> {
                             .filter(v -> v.equals(tempDestination))
                             .findAny()
                             .orElse(tempDestination);
-                    addVertexToGraph(graph, vertex, destination, o.getMovementName() + " - " + block.getBlockId());
+                    addVertexToGraph(graph, vertex, destination, "Block " + block.getBlockId() + " - " + o.getMovementName());
                     destinations.add(destination);
                 }
             }
@@ -89,6 +89,10 @@ public class GraphOperationsImpl implements GraphOperations<Board> {
      */
     @Override
     public List<Vertex<Board>> getShortestPath(Graph<Board> graph, Vertex<Board> source, Vertex<Board> destination) {
+        if (destination == null) {
+            return new ArrayList<>();
+        }
+
         graph.getVertexList().forEach(vertex -> {
             vertex.setDistanceFromRoot(Integer.MAX_VALUE);
             vertex.setPathFromRoot(new ArrayList<>());
@@ -107,12 +111,23 @@ public class GraphOperationsImpl implements GraphOperations<Board> {
                     adjacent.getPathFromRoot().addAll(vertex.getPathFromRoot());
                     adjacent.getPathFromRoot().add(vertex);
                     if (adjacent.equals(destination)) {
+                        destination.getPathFromRoot().add(destination);
                         return destination.getPathFromRoot();
                     }
                 }
             }
         }
 
+        destination.getPathFromRoot().add(destination);
         return destination.getPathFromRoot();
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return boardOperations.toString();
     }
 }

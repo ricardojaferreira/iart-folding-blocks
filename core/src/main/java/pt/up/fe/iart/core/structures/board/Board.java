@@ -94,6 +94,15 @@ public class Board {
 
     /**
      *
+     * @param pos
+     * @return
+     */
+    public Cell getCellByPosition(Position pos) {
+        return cells.stream().filter(cell -> cell.getPosition().equals(pos)).findFirst().orElse(null);
+    }
+
+    /**
+     *
      * @param o
      * @return
      */
@@ -165,6 +174,10 @@ public class Board {
         return stringBuilder.toString();
     }
 
+    /**
+     *
+     * @param stringBuilder
+     */
     private void addBoardBorder(StringBuilder stringBuilder) {
         String topBottomBorder = "+---";
         for (int w = 0; w < width; w++) {

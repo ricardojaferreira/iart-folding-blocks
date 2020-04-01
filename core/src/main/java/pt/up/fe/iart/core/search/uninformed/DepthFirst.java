@@ -47,4 +47,13 @@ public class DepthFirst<V> extends TraversalStrategy<V> {
         }
         return null;
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Depth first Search";
+    }
 }

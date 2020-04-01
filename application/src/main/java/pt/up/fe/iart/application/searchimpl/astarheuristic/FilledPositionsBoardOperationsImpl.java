@@ -50,4 +50,12 @@ public class FilledPositionsBoardOperationsImpl implements BoardOperations {
         return validateBoundaries(board, block) && addBlockAfterValidation(board, block);
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Fill occupied positions";
+    }
 }

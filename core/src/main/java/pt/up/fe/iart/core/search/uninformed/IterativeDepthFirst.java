@@ -89,5 +89,12 @@ public class IterativeDepthFirst<V> extends TraversalStrategy<V> {
         return Optional.empty();
     }
 
-
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Iterative depth first search";
+    }
 }

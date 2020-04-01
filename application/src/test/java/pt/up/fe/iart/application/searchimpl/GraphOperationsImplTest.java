@@ -100,15 +100,19 @@ public class GraphOperationsImplTest {
 
         List<Vertex<Board>> path01 = victim.getShortestPath(graph, graph.getVertexList().get(0), graph.getVertexList().get(3));
         List<String> expectedMovements =
-                Arrays.asList(Operators.DOUBLE_DOWN.getMovementName() + " - 1", Operators.DOUBLE_DOWN.getMovementName() + " - 1");
+                Arrays.asList(
+                        "Block 1 - " + Operators.DOUBLE_DOWN.getMovementName(),
+                        "Block 1 - " + Operators.DOUBLE_DOWN.getMovementName(),
+                        "Block 1 - " + Operators.DOUBLE_DOWN.getMovementName());
         checkMovementOrder(expectedMovements, path01, graph.getVertexList().get(3));
 
         List<Vertex<Board>> path02 = victim.getShortestPath(graph, graph.getVertexList().get(0), graph.getVertexList().get(8));
         List<String> expectedMovements02 = Arrays.asList(
-                Operators.DOUBLE_DOWN.getMovementName() + " - 1",
-                Operators.DOUBLE_DOWN.getMovementName() + " - 1",
-                Operators.DOUBLE_RIGHT.getMovementName() + " - 1",
-                Operators.DOUBLE_RIGHT.getMovementName() + " - 1");
+                "Block 1 - " + Operators.DOUBLE_DOWN.getMovementName(),
+                "Block 1 - " + Operators.DOUBLE_DOWN.getMovementName(),
+                "Block 1 - " + Operators.DOUBLE_RIGHT.getMovementName(),
+                "Block 1 - " + Operators.DOUBLE_RIGHT.getMovementName(),
+                "Block 1 - " + Operators.DOUBLE_RIGHT.getMovementName());
         checkMovementOrder(expectedMovements02, path02, graph.getVertexList().get(8));
     }
 

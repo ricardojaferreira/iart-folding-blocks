@@ -48,4 +48,13 @@ public class NoRulesBoardOperationsImpl implements BoardOperations {
     public boolean addBlock(Board board, Block block) {
         return addBlockAfterValidation(board, block);
     }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Fill without rules";
+    }
 }
