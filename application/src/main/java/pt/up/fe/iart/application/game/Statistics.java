@@ -39,6 +39,10 @@ public class Statistics {
         return nrNodesToVictory;
     }
 
+    public void incrementNrNodesToVictory() {
+        this.nrNodesToVictory++;
+    }
+
     /**
      *
      * @param nrNodesToVictory

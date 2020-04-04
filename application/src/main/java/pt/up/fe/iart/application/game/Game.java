@@ -126,16 +126,17 @@ public class Game {
      */
     private void playHuman() {
         Vertex<Board> root = graph.getVertexList().get(0);
-        showBoardAndPossibleMoves(root);
-
+        this.traversalStrategy.getGraphOperations().expandGraph(graph, root);
+        long startTime = System.nanoTime();
+        showBoardAndPossibleMoves(root, startTime);
     }
 
     /**
      *
      * @param vertex
      */
-    private void showBoardAndPossibleMoves(Vertex<Board> vertex) {
-        long startTime = System.nanoTime();
+    private void showBoardAndPossibleMoves(Vertex<Board> vertex, long startTime) {
+        statistics.incrementNrNodesToVictory();
         Scanner scanner = new Scanner(System.in);
         System.out.println(vertex.getContent().toString());
         if (this.traversalStrategy.getGraphOperations().reachObjective(vertex)) {
@@ -145,29 +146,34 @@ public class Game {
             return;
         }
 
-        this.traversalStrategy.getGraphOperations().expandGraph(graph, vertex);
         StringBuilder stringChoices = new StringBuilder().append(AppConstants.NEW_LINE)
                 .append("Choose one Movement:").append(AppConstants.NEW_LINE);
         for (int i = 0; i < vertex.getAdjacent().size(); i++) {
             stringChoices.append(i + 1).append(" - ").append(vertex.getAdjacent().get(i).getLabel()).append(AppConstants.NEW_LINE);
         }
-        stringChoices.append(vertex.getAdjacent().size()).append(" - ").append("Tip from AI");
+        stringChoices.append(vertex.getAdjacent().size() + 2).append(" - ").append("Tip from AI");
         System.out.println(stringChoices.toString());
         int choice = Integer.valueOf(scanner.nextLine());
-        if (choice < 1 || choice > vertex.getAdjacent().size()) {
+        if (choice < 1 || choice > vertex.getAdjacent().size() + 2) {
             System.out.println("INVALID CHOICE");
         } else {
-            if (choice == vertex.getAdjacent().size()) {
+            if (choice == vertex.getAdjacent().size() + 2) {
                 statistics.incrementNumberOfTips();
                 Vertex<Board> chosenVertex = giveTip(vertex);
                 if (chosenVertex != null) {
                     vertex = chosenVertex;
+                } else {
+                    System.out.println("This game has no solution. Sorry.");
+                    long endTime = System.nanoTime();
+                    statistics.setElapsedTime(endTime - startTime);
+                    return;
                 }
             } else {
-                vertex = vertex.getAdjacent().get(choice).getDestination();
+                vertex = vertex.getAdjacent().get(choice - 1).getDestination();
+                this.traversalStrategy.getGraphOperations().expandGraph(graph, vertex);
             }
         }
-        showBoardAndPossibleMoves(vertex);
+        showBoardAndPossibleMoves(vertex, startTime);
     }
 
     /**
@@ -179,7 +185,7 @@ public class Game {
         Vertex<Board> destination = this.traversalStrategy.getResultNode(graph, root);
         if (destination != null) {
             List<Vertex<Board>> path = this.traversalStrategy.getShortestPath(graph, root, destination);
-            return path.get(0);
+            return path.get(1);
         }
         return null;
     }
