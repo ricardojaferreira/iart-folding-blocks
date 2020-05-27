@@ -106,7 +106,7 @@ def qLearning(env, qtable, eps, eps_min, eps_decay, episodes, steps, lr, gamma):
 
 env = gym.make("fb-v1")  # Create environment
 env.render()
-qtable = np.zeros((2000, env.action_space.n))  # Generate new QTable
+qtable = np.zeros((5000, env.action_space.n))  # Generate new QTable
 stepStatsQ, rewardStatsQ, winCountQ = qLearning(
     env, qtable, 1.0, 0.005, 0.995, 1000, 100, 0.65, 0.65)
 env.close()
@@ -126,6 +126,6 @@ env.close()
 #plt.ylabel('Sucessful Episodes in 1000 attempts')
 # plt.show()
 
-plot("Episode Number", "Steps to completion", stepStatsQ, stepStatsS)
+plot("Episode Number", "Total reward", rewardStatsQ, rewardStatsS)
 plt.legend(["QLearning", "Sarsa Learning"], loc="upper left")
 plt.show()
