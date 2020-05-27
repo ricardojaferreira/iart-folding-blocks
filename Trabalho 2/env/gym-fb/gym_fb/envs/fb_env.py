@@ -1,3 +1,4 @@
+import random
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
@@ -37,10 +38,11 @@ class FoldingBlocks(gym.Env):
 
     def __init__(self):
         self.actions = ["DBUP", "DBDOWN", "DBLEFT", "DBRIGHT"]
-
-        self.boardLayout = boardLayout1
+        self.boardLayout = boardLayout2
         self.board = fb_board(self.boardLayout)
-        self.state = self.board.getIdBoard()
+        self.stateCount = 1
+        self.stateDict = {self.board.hashCode(): 0}
+        self.state = 0
         self.done = False
         self.invalidMove = False
         self.reward = 0
@@ -59,30 +61,42 @@ class FoldingBlocks(gym.Env):
         if self.done == True:
             return self.state, self.reward, self.done, info
 
-        blockVal = target // (self.board.blockCount + 1)
+        blockVal = target // 4
         block = self.board.blocks[blockVal]
         actionVal = target % 4
         action = self.actions[actionVal]
 
-        info = {block.color, action}
-
         dup = self.board.duplicateBlock(block.id, action)
-        self.state = self.board.getIdBoard()
+        stateHash = self.board.hashCode()
+        if stateHash in self.stateDict.keys():
+            self.state = self.stateDict[stateHash]
+        else:
+            self.stateDict[stateHash] = self.stateCount
+            self.state = self.stateCount
+            self.stateCount += 1
 
         if dup:
             self.reward -= 1
             if self.checkCompletion():
                 self.done = True
+                info = {block.color, action, "Win"}
+                self.reward += 100
+            if not self.board.hasAvailableMoves():
+                self.done = True
+                self.reward -= 100
+                info = {block.color, action, "Loss"}
         else:
             self.invalidMove = True
+            info = {block.color, action, "Invalid Move"}
+            self.reward -= 10
 
         return self.state, self.reward, self.done, info
 
     def reset(self):
-        self.board = fb_board(self.boardLayout)
-        self.state = self.board.getIdBoard()
+        self.board.reset()
         self.done = False
         self.reward = 0
+        self.state = 0
         return self.state
 
     def render(self):

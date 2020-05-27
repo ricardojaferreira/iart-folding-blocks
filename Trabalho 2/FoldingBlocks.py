@@ -1,6 +1,7 @@
 import gym
 import gym_fb
 import numpy as np
+from matplotlib import pyplot as plt
 import random
 
 
@@ -13,6 +14,8 @@ def saveQTableCSV(qtable, filepath):
 
 
 def qLearning(env, qtable, eps, eps_min, eps_decay, episodes, steps, lr, gamma):
+
+    stepStats = np.zeros(episodes)
 
     for ep in range(episodes):
         state = env.reset()
@@ -36,7 +39,8 @@ def qLearning(env, qtable, eps, eps_min, eps_decay, episodes, steps, lr, gamma):
             state = new_state
 
             if done:
-                #print("Episode finished after {} timesteps".format(step+1))
+                stepStats[ep] = step+1
+                # print("Episode finished after {} timesteps".format(step+1))
                 break
             # print(info)
             # env.render()
@@ -45,15 +49,22 @@ def qLearning(env, qtable, eps, eps_min, eps_decay, episodes, steps, lr, gamma):
             eps *= eps_decay
 
         # env.render()
+    return stepStats
 
 
 env = gym.make("fb-v1")  # Create environment
 
-qtable = np.zeros((300, env.action_space.n))  # Generate new QTable
+qtable = np.zeros((2000, env.action_space.n))  # Generate new QTable
 # qtable = loadQTableCSV("data/QTable.csv") # Load saved QTable
 
-qLearning(env, qtable, 1.0, 0.005, 0.99993, 1000, 50, 0.65, 0.65)
+stepStats = qLearning(env, qtable, 1.0, 0.005, 0.995, 1000, 100, 0.65, 0.65)
 
-saveQTableCSV(qtable, "data/QTable.csv")  # Save QTable to file
+# saveQTableCSV(qtable, "data/QTable.csv")  # Save QTable to file
 
 env.close()
+
+plt.autoscale()
+plt.plot(stepStats)
+plt.xlabel("Episode Number")
+plt.ylabel("Steps to completion/failure")
+plt.show()

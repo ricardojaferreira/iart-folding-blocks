@@ -1,4 +1,5 @@
 import math
+import random
 
 
 def TextBGColor(color, text):
@@ -147,11 +148,15 @@ class fb_board:
     def __init__(self, board):
         self.height = len(board)
         self.width = len(board[0])
+        self.layout = board
+        self.cellCount = self.height * self.width
         self.centerCoord = [self.width // 2, self.height // 2]
         self.cells = self.initBoard()
         self.blocks = []
         self.setupBoard(board)
         self.blockCount = len(self.blocks)
+        self.zobTable = [[[random.randint(1, 2**self.cellCount - 1) for i in range(8)]
+                          for j in range(self.width)]for k in range(self.height)]
 
     def initBoard(self):
         return [[fb_cell(i, j, self.centerCoord, 0) for j in range(self.width)]
@@ -267,6 +272,19 @@ class fb_board:
             return self.duplicateBlockHor(block, True)
         if dir == "DBLEFT":
             return self.duplicateBlockHor(block, False)
+
+    def hashCode(self):
+        h = 0
+        for i in range(self.height):
+            for j in range(self.width):
+                id = self.cells[i][j].id
+                h ^= self.zobTable[i][j][id]
+        return h
+
+    def reset(self):
+        self.cells = self.initBoard()
+        self.blocks = []
+        self.setupBoard(self.layout)
 
     def print(self):
         for i in range(self.height):
