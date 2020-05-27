@@ -21,14 +21,15 @@ class FoldingBlocks(gym.Env):
             [1, 1, 1, 1, 1],
             [2, 1, 1, 1, 5]
         ]
-        self.state = fb_board(self.boardLayout)
+        self.board = fb_board(self.boardLayout)
+        self.state = self.board.getIdBoard()
         self.done = False
         self.invalidMove = False
         self.reward = 0
-        self.action_space = spaces.Discrete(self.state.blockCount * 4-1)
+        self.action_space = spaces.Discrete(self.board.blockCount * 4-1)
 
     def checkCompletion(self):
-        for row in self.state.cells:
+        for row in self.board.cells:
             for rowCell in row:
                 if rowCell.id == 1:
                     return False
@@ -40,14 +41,15 @@ class FoldingBlocks(gym.Env):
         if self.done == True:
             return self.state, self.reward, self.done, info
 
-        blockVal = target // (self.state.blockCount + 1)
-        block = self.state.blocks[blockVal]
+        blockVal = target // (self.board.blockCount + 1)
+        block = self.board.blocks[blockVal]
         actionVal = target % 4
         action = self.actions[actionVal]
 
         info = {block.color, action}
 
-        dup = self.state.duplicateBlock(block.id, action)
+        dup = self.board.duplicateBlock(block.id, action)
+        self.state = self.board.getIdBoard()
 
         if dup:
             self.reward -= 1
@@ -59,13 +61,15 @@ class FoldingBlocks(gym.Env):
         return self.state, self.reward, self.done, info
 
     def reset(self):
-        self.state = fb_board(self.boardLayout)
+        self.board = fb_board(self.boardLayout)
+        self.state = self.board.getIdBoard()
         self.done = False
         self.reward = 0
+        return self.state
 
     def render(self):
         print()
-        self.state.print()
+        self.board.print()
         print()
 
     def seed(self, seed=None):

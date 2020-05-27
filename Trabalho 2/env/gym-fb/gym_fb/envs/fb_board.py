@@ -224,6 +224,38 @@ class fb_board:
         block.dupHor(mirror)
         return True
 
+    def checkVertAvailableMoves(self, block, up):
+        flip = block.getVerticalFlip()
+        for pos in flip:
+            i = int(pos[0])
+            i += -block.height if up else block.height
+            j = int(pos[1])
+            if not self.verifyAvailablePos(i, j):
+                return False
+        return True
+
+    def checkHorAvailableMoves(self, block, right):
+        mirror = block.getMirrorFlip()
+        for pos in mirror:
+            i = int(pos[0])
+            j = int(pos[1])
+            j += block.width if right else -block.width
+            if not self.verifyAvailablePos(i, j):
+                return False
+        return True
+
+    def hasAvailableMoves(self):
+        for block in self.blocks:
+            if self.checkVertAvailableMoves(block, True):
+                return True
+            if self.checkVertAvailableMoves(block, False):
+                return True
+            if self.checkHorAvailableMoves(block, True):
+                return True
+            if self.checkHorAvailableMoves(block, False):
+                return True
+        return False
+
     def duplicateBlock(self, id, dir):
         block = self.getBlock(id)
 
@@ -242,3 +274,6 @@ class fb_board:
             for j in range(self.width):
                 cell = self.cells[i][j]
                 print(cell.chr, end="")
+
+    def getIdBoard(self):
+        return [[self.cells[i][j].id for j in range(self.width)] for i in range(self.height)]
