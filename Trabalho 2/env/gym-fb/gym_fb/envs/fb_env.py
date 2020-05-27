@@ -4,6 +4,17 @@ from gym.utils import seeding
 from gym_fb.envs.fb_board import fb_board
 import numpy as np
 
+boardLayout1 = [
+    [1, 1, 4, 0, 0],
+    [1, 1, 4, 0, 0],
+    [1, 1, 4, 0, 0],
+    [1, 1, 1, 0, 0],
+    [1, 1, 1, 0, 0],
+    [1, 1, 1, 0, 0],
+    [1, 1, 1, 1, 1],
+    [2, 1, 1, 1, 5]
+]
+
 
 class FoldingBlocks(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -11,16 +22,7 @@ class FoldingBlocks(gym.Env):
     def __init__(self):
         self.actions = ["DBUP", "DBDOWN", "DBLEFT", "DBRIGHT"]
 
-        self.boardLayout = [
-            [1, 1, 4, 0, 0],
-            [1, 1, 4, 0, 0],
-            [1, 1, 4, 0, 0],
-            [1, 1, 1, 0, 0],
-            [1, 1, 1, 0, 0],
-            [1, 1, 1, 0, 0],
-            [1, 1, 1, 1, 1],
-            [2, 1, 1, 1, 5]
-        ]
+        self.boardLayout = boardLayout1
         self.board = fb_board(self.boardLayout)
         self.state = self.board.getIdBoard()
         self.done = False
