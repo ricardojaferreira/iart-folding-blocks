@@ -242,27 +242,3 @@ class fb_board:
             for j in range(self.width):
                 cell = self.cells[i][j]
                 print(cell.chr, end="")
-
-
-boardLayout = [
-    [1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 5],
-    [1, 2, 1, 1, 1, 1],
-    [1, 1, 1, 6, 1, 1],
-    [1, 3, 1, 1, 0, 0]
-]
-
-board = fb_board(boardLayout)
-board.print()
-print()
-
-
-if not board.duplicateBlock(6, "DBLEFT"):
-    print("invalid")
-board.print()
-print()
-
-if not board.duplicateBlock(6, "DBDOWN"):
-    print("invalid")
-board.print()
-print()
