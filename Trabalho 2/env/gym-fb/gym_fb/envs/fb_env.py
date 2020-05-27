@@ -79,12 +79,12 @@ class FoldingBlocks(gym.Env):
             self.reward -= 1
             if self.checkCompletion():
                 self.done = True
-                info = {block.color, action, "Win"}
+                info = {0: block.color, 1: action, 2: "Win"}
                 self.reward += 100
-            if not self.board.hasAvailableMoves():
+            elif not self.board.hasAvailableMoves():
                 self.done = True
                 self.reward -= 100
-                info = {block.color, action, "Loss"}
+                info = {0: block.color, 1: action, 2: "Loss"}
         else:
             self.invalidMove = True
             info = {block.color, action, "Invalid Move"}
